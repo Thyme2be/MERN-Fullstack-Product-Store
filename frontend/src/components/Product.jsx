@@ -1,16 +1,31 @@
 import {
   Box,
+  Button,
   Heading,
   HStack,
   IconButton,
   Image,
+  Input,
   Text,
+  VStack,
 } from "@chakra-ui/react";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { useColorModeValue } from "./ui/color-mode";
 import { useProductStore } from "@/store/product";
 import { Toaster, toaster } from "./ui/toaster";
+import { updateProduct } from "./../../../backend/controllers/product.controller";
 
 const Product = ({ product }) => {
   const textColor = useColorModeValue("gray.600", "gray.200");
@@ -71,11 +86,40 @@ const Product = ({ product }) => {
         <HStack gap={2}>
           <Toaster />
 
-          {/* Update Icon */}
+          <DialogRoot
+            placement={"center"}
+            motionPreset={"slide-in-bottom"}
+            closeOnInteractOutside={false}
+          >
+            <DialogTrigger asChild>
+              {/* Update Icon */}
+              <IconButton colorPalette={"blue"}>
+                <FaEdit />
+              </IconButton>
+            </DialogTrigger>
 
-          <IconButton colorPalette={"blue"}>
-            <FaEdit />
-          </IconButton>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Update Product</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                <VStack gap={4}>
+                  <Input placeholder="Product Name" name="name" />
+                  <Input placeholder="Price" name="name" type="number" />
+                  <Input placeholder="Image URL" name="name" />
+                </VStack>
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger asChild>
+                  <Button colorPalette={"blue"}>Update</Button>
+                </DialogActionTrigger>
+                <DialogActionTrigger asChild>
+                  <Button>Cancel</Button>
+                </DialogActionTrigger>
+              </DialogFooter>
+              <DialogCloseTrigger />
+            </DialogContent>
+          </DialogRoot>
 
           {/* Delete Icon */}
           <IconButton
