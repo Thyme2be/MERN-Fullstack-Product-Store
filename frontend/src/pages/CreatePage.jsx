@@ -18,32 +18,41 @@ const CreatePage = () => {
     image: "",
   });
 
-  const styleInputForm = {
-    borderColor: "gray.500",
-  };
-
   const { createProduct } = useProductStore();
 
   const handleAddProduct = async () => {
     const { success, message } = await createProduct(newProduct);
+
     if (!success) {
       toaster.create({
-        title: 'Error',
+        title: "Error",
         description: message,
         type: "error",
+        duration: 4000,
+        action: {
+          label: "X",
+        },
       });
     } else {
       toaster.create({
         title: "Success",
         description: message,
         type: "success",
+        duration: 4000,
+        action: {
+          label: "X",
+        },
       });
     }
+    setNewProduct({ name: "", price: "", image: "" });
+  };
+
+  const styleInputForm = {
+    borderColor: "gray.500",
   };
 
   return (
     <Container maxWidth={"md"}>
-      <Toaster />
       <VStack gap={8}>
         <Heading as={"h1"} size={"4xl"} textAlign={"center"} marginBottom={8}>
           Create New Product
@@ -88,6 +97,7 @@ const CreatePage = () => {
                 setNewProduct({ ...newProduct, image: event.target.value })
               }
             />
+            <Toaster />
             <Button
               colorPalette={"blue"}
               onClick={handleAddProduct}
