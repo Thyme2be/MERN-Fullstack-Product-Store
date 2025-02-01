@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon backend/server.js"
+    "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "cross-env NODE_ENV=production node backend/server.js"
   },
   "type": "module",
   "keywords": [],
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "^3.5.1",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.9",
     "vite-tsconfig-paths": "^5.1.4"
   }
