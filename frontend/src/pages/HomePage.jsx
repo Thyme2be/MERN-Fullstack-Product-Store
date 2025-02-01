@@ -1,4 +1,4 @@
-import Product from "@/components/Product";
+import Product from "@/components/ProductCard";
 import { useProductStore } from "@/store/product";
 import { Container, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ const HomePage = () => {
     fetchProduct();
   }, [fetchProduct]);
 
-  console.log("products", products);
+  // console.log("products", products);
 
   return (
     <Container maxWidth={"6xl"} paddingY={12}>

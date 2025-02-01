@@ -25,15 +25,43 @@ import { MdDeleteForever } from "react-icons/md";
 import { useColorModeValue } from "./ui/color-mode";
 import { useProductStore } from "@/store/product";
 import { Toaster, toaster } from "./ui/toaster";
-import { updateProduct } from "./../../../backend/controllers/product.controller";
+import { useState } from "react";
 
 const Product = ({ product }) => {
   const textColor = useColorModeValue("gray.600", "gray.200");
   const bg = useColorModeValue("white", "gray.800");
+  const [updatedProduct, setUpdateProduct] = useState(product);
+  const { updateProduct, deleteProduct } = useProductStore();
 
-  const { deleteProduct } = useProductStore();
+  const handleUpdateProduct = async (productId, updatedProduct) => {
+    const { success, message } = await updateProduct(productId, updatedProduct);
+
+    if (!success) {
+      toaster.create({
+        title: "Error",
+        description: message,
+        type: "error",
+        duration: 4000,
+        action: {
+          label: "X",
+        },
+      });
+    } else {
+      toaster.create({
+        title: "Success",
+        description: "Product updated successfully",
+        type: "success",
+        duration: 4000,
+        action: {
+          label: "X",
+        },
+      });
+    }
+  };
+
   const handleDeleteProduct = async (productId) => {
     const { success, message } = await deleteProduct(productId);
+
     if (!success) {
       toaster.create({
         title: "Error",
@@ -104,14 +132,53 @@ const Product = ({ product }) => {
               </DialogHeader>
               <DialogBody>
                 <VStack gap={4}>
-                  <Input placeholder="Product Name" name="name" />
-                  <Input placeholder="Price" name="name" type="number" />
-                  <Input placeholder="Image URL" name="name" />
+                  <Input
+                    placeholder="Product Name"
+                    name="name"
+                    value={updatedProduct.name}
+                    onChange={(event) =>
+                      setUpdateProduct({
+                        ...updatedProduct,
+                        name: event.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Price"
+                    name="name"
+                    type="number"
+                    value={updatedProduct.price}
+                    onChange={(event) =>
+                      setUpdateProduct({
+                        ...updatedProduct,
+                        price: event.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Image URL"
+                    name="name"
+                    value={updatedProduct.image}
+                    onChange={(event) =>
+                      setUpdateProduct({
+                        ...updatedProduct,
+                        image: event.target.value,
+                      })
+                    }
+                  />
                 </VStack>
               </DialogBody>
               <DialogFooter>
                 <DialogActionTrigger asChild>
-                  <Button colorPalette={"blue"}>Update</Button>
+                  {/* Update Button */}
+                  <Button
+                    colorPalette={"blue"}
+                    onClick={() =>
+                      handleUpdateProduct(product._id, updatedProduct)
+                    }
+                  >
+                    Update
+                  </Button>
                 </DialogActionTrigger>
                 <DialogActionTrigger asChild>
                   <Button>Cancel</Button>
