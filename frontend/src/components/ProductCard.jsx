@@ -108,7 +108,7 @@ const Product = ({ product }) => {
         </Heading>
 
         <Text fontWeight={"bold"} fontSize={"xl"} color={textColor} mb={4}>
-          ${product.price}
+          ${(product.price).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </Text>
 
         <HStack gap={2}>
